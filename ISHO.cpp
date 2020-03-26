@@ -5,19 +5,19 @@
 #include ".\mingw-std-threads\mingw.thread.h"
 using namespace std;
 
-int *runtime_code = new int(1); //°õ¦æ¥N½X
-double max_x = 40.0;//«Å§i³Ì¤j½d³ò
-double max_y = 40.0;//«Å§i³Ì¤j½d³ò
+int *runtime_code = new int(1); //ï¿½ï¿½ï¿½ï¿½Nï¿½X
+double max_x = 40.0;//ï¿½Å§iï¿½Ì¤jï¿½dï¿½ï¿½
+double max_y = 40.0;//ï¿½Å§iï¿½Ì¤jï¿½dï¿½ï¿½
 double full_x = max_x;
 double full_y = max_y;
 
 
-// «Å§iÃþ§Oª±®a
+// ï¿½Å§iï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½a
 class player {
-// «Å§i public ¦¨­û
+// ï¿½Å§i public ï¿½ï¿½ï¿½ï¿½
 public:
-    int x; //ªì©l®y¼Ðx
-    int y; //ªì©l®y¼Ðy
+    int x; //ï¿½ï¿½lï¿½yï¿½ï¿½x
+    int y; //ï¿½ï¿½lï¿½yï¿½ï¿½y
     double re_set_coordinate(double,double);
     void console();
 private:
@@ -25,35 +25,35 @@ private:
 
 };
 double player::re_set_coordinate(double new_x = 0,double new_y = 0){
-//­«·s³]©w®y¼Ð¡A¦P®É¥i¥H¥Î©óªì©l¤Æ¡A·íµM¤]¥i¥H¥Î©ó­×¥Î¿ù»~
+//ï¿½ï¿½ï¿½sï¿½]ï¿½wï¿½yï¿½Ð¡Aï¿½Pï¿½É¥iï¿½Hï¿½Î©ï¿½ï¿½lï¿½Æ¡Aï¿½ï¿½ï¿½Mï¿½]ï¿½iï¿½Hï¿½Î©ï¿½×¥Î¿ï¿½ï¿½~
 x = new_x;
 y = new_y;
 }
 
 class chatting_box_and_console{
-//«Å§ipublic¦¨­û
+//ï¿½Å§ipublicï¿½ï¿½ï¿½ï¿½
 public:
     void console(player &input);
     double safe_check(double, double);
 };
-//µ¹´¼»Ù¥Îªº¦w¥þÀË¬d
+//ï¿½ï¿½ï¿½ï¿½ï¿½Ù¥Îªï¿½ï¿½wï¿½ï¿½ï¿½Ë¬d
 double chatting_box_and_console::safe_check(double checking_x, double checking_y){
     int i = 1;
     if ((checking_x <= full_x)&&(checking_y <= full_y)){
         i = 0;
     }
-    //ÀË¬d§¹¦¨
+    //ï¿½Ë¬dï¿½ï¿½ï¿½ï¿½
     if (i == 0){
         return 13395;
     }
-    //¦^³ø¥¿½T
+    //ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½T
     else{
-        cout << "¿ù»~[1]®y¼Ð¿ù»~\n";
+        cout << "ï¿½ï¿½ï¿½~[1]ï¿½yï¿½Ð¿ï¿½ï¿½~\n";
         return 41392;
     }
-    //¦^³ø¿ù»~
+    //ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½~
 }
-//«Å§iÃþ§O±±¨î¥x
+//ï¿½Å§iï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½x
 void chatting_box_and_console::console(player &input){
     string command;
     while (*runtime_code == 1){
@@ -63,24 +63,24 @@ void chatting_box_and_console::console(player &input){
         }
         else if(command == string("SetCoordinate")){
             double i,j;
-            cout << "¿é¤J·sªºx®y¼Ð:";
+            cout << "ï¿½ï¿½Jï¿½sï¿½ï¿½xï¿½yï¿½ï¿½:";
             cin >> i;
-            cout << "¿é¤J·sªºy®y¼Ð:";
+            cout << "ï¿½ï¿½Jï¿½sï¿½ï¿½yï¿½yï¿½ï¿½:";
             cin >> j;
-            cout << "§ó§ï¤¤\n";
+            cout << "ï¿½ï¿½ï¤¤\n";
             int k = safe_check(i,j);
             if (k == 13395){
                 input.re_set_coordinate(i,j);
-                cout << "¤w¥Í®Ä\n";
+                cout << "ï¿½wï¿½Í®ï¿½\n";
             }
             else{
-                cout << "§ó§ï¥¢±Ñ\n";
+                cout << "ï¿½ï¿½ï¥¢ï¿½ï¿½\n";
             };
         }
     }
 }
-//«Å§i©µ¿ð¨ç¼Æ
-void Delay(int time)//time*1000¬°¬í¼Æ
+//ï¿½Å§iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+void Delay(int time)//time*1000ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 {
 clock_t now = clock();
 while(clock() - now < time);
@@ -88,23 +88,23 @@ while(clock() - now < time);
 void layout(player &input){
     while (*runtime_code == 1){
         Delay(16);
-        /*¤@¤ÀÄÁ¥u°õ¦æ60¦¸
-        ¦ý¨ä¹ê§¹¥þ¬ÝCPU°õ¦æ³t«×(kHz)*/
+        /*ï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½60ï¿½ï¿½
+        ï¿½ï¿½ï¿½ï¿½ê§¹ï¿½ï¿½ï¿½ï¿½CPUï¿½ï¿½ï¿½ï¿½tï¿½ï¿½(kHz)*/
         cout << input.x << "," << input.y << endl;
     }
 }
 
 int main() {
     cout << "Hello! World!\n";
-    cout << "¦a¹Ï³Ì¤jX¶b:" << full_x << endl;
-    cout << "¦a¹Ï³Ì¤jY¶b:" << full_y << endl;
+    cout << "ï¿½aï¿½Ï³Ì¤jXï¿½b:" << full_x << endl;
+    cout << "ï¿½aï¿½Ï³Ì¤jYï¿½b:" << full_y << endl;
     cout << "";
-    player My_Self;//«Øºcª±®a
-    My_Self.re_set_coordinate(0,0);//ªì©l¤Æª±®a
-    chatting_box_and_console box;//«Øºc¶Â½c§@·~
-    thread a(box.console(My_Self));
+    player My_Self;//ï¿½Øºcï¿½ï¿½ï¿½a
+    My_Self.re_set_coordinate(0,0);//ï¿½ï¿½lï¿½Æªï¿½ï¿½a
+    chatting_box_and_console box;//ï¿½Øºcï¿½Â½cï¿½@ï¿½~
+    thread a(&chatting_box_and_console::console,&box,(My_Self));
     a.join();
-    thread b(layout(My_Self));
+    thread b(layout,(My_Self));
     b.join();
 
 
