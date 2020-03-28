@@ -2,7 +2,6 @@
 #include<string>
 #include <ctime>
 #include <thread>
-#include <tchar.h>
 using namespace std;
 
 int *runtime_code = new int(1); //執行代碼
@@ -88,52 +87,95 @@ int main(){
 
     return 0;
 }*/
+
 #ifndef LINUX
-#define UNICODE
+#include <tchar.h>
 #include <windows.h>
-//主窗口類名稱
-static char *szWindowClass[] = {"DesktopApp"};
-//出現在應用程序標題欄中的字串
-static char *szTitle[] = {"Windows Desktop Guided Tour Application"};
-HINSTANCE hInst;
-//轉發此代碼模塊中包含的函數的聲明：
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
+
+//宣告Windows程序
+LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
+
+//使類名成為全局變量
+TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
+
+int WINAPI WinMain (HINSTANCE hThisInstance,
+                     HINSTANCE hPrevInstance,
+                     LPSTR lpszArgument,
+                     int nCmdShow)
 {
-    WNDCLASSEXA wcex;
+    HWND hwnd;               /* This is the handle for our window */
+    MSG messages;            /* Here messages to the application are saved */
+    WNDCLASSEX wincl;        /* Data structure for the windowclass */
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, IDI_APPLICATION);
-    wcex.hCursor        = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = NULL;
-    wcex.lpszClassName  = "DesktopApp";
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, IDI_APPLICATION);
+    /* The Window structure */
+    wincl.hInstance = hThisInstance;
+    wincl.lpszClassName = szClassName;
+    wincl.lpfnWndProc = WindowProcedure;      /* This function is called by windows */
+    wincl.style = CS_DBLCLKS;                 /* Catch double-clicks */
+    wincl.cbSize = sizeof (WNDCLASSEX);
 
-    hInst = hInstance;//將實例句柄存儲在全局變量中
-    HWND hWnd = CreateWindow(// CreateWindow的參數說明：
-        szWindowClass,// szWindowClass：應用程序的名稱
-        szTitle,// szTitle：出現在標題欄中的文本
-        WS_OVERLAPPEDWINDOW,// WS_OVERLAPPEDWINDOW：要創建的窗口的類型
-        CW_USEDEFAULT, CW_USEDEFAULT,// CW_USEDEFAULT，CW_USEDEFAULT：初始位置（x，y）
-        500, 100,// 500、100：初始大小（寬度，長度）
-        NULL,// NULL：此窗口的父級
-        NULL,// NULL：此應用程序沒有菜單欄
-        hInstance,// hInstance：WinMain中的第一個參數
-        NULL// NULL：在此應用程序中不使用
-    );
+    /* Use default icon and mouse-pointer */
+    wincl.hIcon = LoadIcon (NULL, IDI_APPLICATION);
+    wincl.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
+    wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
+    wincl.lpszMenuName = NULL;                 /* No menu */
+    wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
+    wincl.cbWndExtra = 0;                      /* structure or the window instance */
+    /* Use Windows's default colour as the background of the window */
+    wincl.hbrBackground = (HBRUSH) COLOR_BACKGROUND;
 
-   ShowWindow(hWnd,// ShowWindow的參數說明：
-      nCmdShow);// hWnd：從CreateWindow返回的值
-   UpdateWindow(hWnd);// nCmdShow：WinMain中的第四個參數
+    /* Register the window class, and if it fails quit the program */
+    if (!RegisterClassEx (&wincl))
+        return 0;
+
+    /* The class is registered, let's create the program*/
+    hwnd = CreateWindowEx (
+           0,                   /* Extended possibilites for variation */
+           szClassName,         /* Classname */
+           _T("Code::Blocks Template Windows App"),       /* Title Text */
+           WS_OVERLAPPEDWINDOW, /* default window */
+           CW_USEDEFAULT,       /* Windows decides the position */
+           CW_USEDEFAULT,       /* where the window ends up on the screen */
+           544,                 /* The programs width */
+           375,                 /* and height in pixels */
+           HWND_DESKTOP,        /* The window is a child-window to desktop */
+           NULL,                /* No menu */
+           hThisInstance,       /* Program Instance handler */
+           NULL                 /* No Window Creation data */
+           );
+
+    /* Make the window visible on the screen */
+    ShowWindow (hwnd, nCmdShow);
+
+    /* Run the message loop. It will run until GetMessage() returns 0 */
+    while (GetMessage (&messages, NULL, 0, 0))
+    {
+        /* Translate virtual-key messages into character messages */
+        TranslateMessage(&messages);
+        /* Send message to WindowProcedure */
+        DispatchMessage(&messages);
+    }
+
+    /* The program return-value is 0 - The value that PostQuitMessage() gave */
+    return messages.wParam;
 }
 
 
-#endif // LINUX
+/*  This function is called by the Windows function DispatchMessage()  */
 
+LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)                  /* handle the messages */
+    {
+        case WM_DESTROY:
+            PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
+            break;
+        default:                      /* for messages that we don't deal with */
+            return DefWindowProc (hwnd, message, wParam, lParam);
+    }
+
+    return 0;
+}
+
+#endif // LINUX
 
