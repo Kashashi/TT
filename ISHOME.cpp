@@ -2,11 +2,11 @@
 #include<string>
 #include <ctime>
 #include <thread>
+#include <fstream>
 using namespace std;
 
+char set_file_need_name[] = ("1.txt");//該字串為設定檔案
 int *runtime_code = new int(1); //執行代碼
-
-//檢查完畢
 
 double max_x = 40.0;//宣告最大範圍
 double max_y = 40.0;//宣告最大範圍
@@ -71,6 +71,37 @@ public:
     }
 };
 
+//檢查完畢
+
+bool Find_set(string a="a",string c="c",string b="="){
+    ifstream in(set_file_need_name);
+    string line;//行數
+    string need_str = a+b+c;//字串合併
+    if((a=="a")&&(c=="c")){
+        cout << "你是不是忘記了什麼?\n";
+    }
+    if(in){// 有該檔案
+        while (getline(in,line)) // line中不包括每行的換行符
+        {
+            cout << line << endl;
+            if(line == need_str){
+                cout <<"OK" << endl;
+                return true;
+            }
+            else{
+                cout << "該筆資料不存在或是遺失";
+                *runtime_code = 3;
+                return false;
+            }
+        }
+    }
+    else // 沒有該檔案
+    {
+        cout <<"沒有該檔案" << endl;
+        return false;
+    }
+}
+
 /*
 int main(){
     cout << "Hello! World!\n";
@@ -84,16 +115,18 @@ int main(){
     a.join();
     b.join();
 
+
     return 0;
-}
-*/
+}*/
+
+#ifndef LINUX
 #include <tchar.h>
 #include <windows.h>
 
-/*  Declare Windows procedure  */
+//宣告Windows程序
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
-/*  Make the class name into a global variable  */
+//使類名成為全局變量
 TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
 
 int WINAPI WinMain (HINSTANCE hThisInstance,
@@ -101,76 +134,80 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
                      LPSTR lpszArgument,
                      int nCmdShow)
 {
-    HWND hwnd;               /* This is the handle for our window */
-    MSG messages;            /* Here messages to the application are saved */
-    WNDCLASSEX wincl;        /* Data structure for the windowclass */
+    HWND hwnd;//這是視窗的控制權
+    MSG messages;//此處保存到應用程序的消息
+    WNDCLASSEX wincl;//視窗類別的數據結構
 
-    /* The Window structure */
+    /* 視窗結構 */
     wincl.hInstance = hThisInstance;
-    wincl.lpszClassName = szClassName;
-    wincl.lpfnWndProc = WindowProcedure;      /* This function is called by windows */
-    wincl.style = CS_DBLCLKS;                 /* Catch double-clicks */
+    wincl.lpszClassName = szClassName;//視窗標題
+    wincl.lpfnWndProc = WindowProcedure;//Windows調用此功能
+    wincl.style = CS_DBLCLKS;//捕捉雙擊
     wincl.cbSize = sizeof (WNDCLASSEX);
 
-    /* Use default icon and mouse-pointer */
+    /* 使用默認圖標和鼠標指針 */
     wincl.hIcon = LoadIcon (NULL, IDI_APPLICATION);
     wincl.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
     wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
-    wincl.lpszMenuName = NULL;                 /* No menu */
-    wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
-    wincl.cbWndExtra = 0;                      /* structure or the window instance */
-    /* Use Windows's default colour as the background of the window */
+    wincl.lpszMenuName = NULL;//視窗選單狀態:無
+    wincl.cbClsExtra = 0;//視窗類別後沒有多餘的字節
+    wincl.cbWndExtra = 0;//結構或視窗詳情
+    /* 使用Windows的默認顏色作為窗口的背景 */
     wincl.hbrBackground = (HBRUSH) COLOR_BACKGROUND;
 
-    /* Register the window class, and if it fails quit the program */
+    /* 註冊視窗類別，如果失敗，則退出程序 */
     if (!RegisterClassEx (&wincl))
         return 0;
 
-    /* The class is registered, let's create the program*/
+    /* 該類別已完成註冊，就創建程序 */
     hwnd = CreateWindowEx (
-           0,                   /* Extended possibilites for variation */
-           szClassName,         /* Classname */
-           _T("Code::Blocks Template Windows App"),       /* Title Text */
-           WS_OVERLAPPEDWINDOW, /* default window */
-           CW_USEDEFAULT,       /* Windows decides the position */
-           CW_USEDEFAULT,       /* where the window ends up on the screen */
-           544,                 /* The programs width */
-           375,                 /* and height in pixels */
-           HWND_DESKTOP,        /* The window is a child-window to desktop */
-           NULL,                /* No menu */
-           hThisInstance,       /* Program Instance handler */
-           NULL                 /* No Window Creation data */
+           0,//視窗擴充變數
+           szClassName,//類別名稱
+           _T("Code::Blocks Template Windows App"),//標題文字
+           WS_OVERLAPPEDWINDOW,//預設視窗
+           CW_USEDEFAULT,//視窗出現的位置:由系統決定
+           CW_USEDEFAULT,//顯示位置
+           544,//應用程式的寬度
+           375,//應用程式的高度 使用的是像素為單位
+           HWND_DESKTOP,//指定為某東西的子視窗 這裡指定為桌面的子視窗
+           NULL,//應用程式的選單:無
+           hThisInstance,//程序實例處理程序
+           NULL//視窗創建數據:無
            );
 
-    /* Make the window visible on the screen */
+    /* 使視窗在螢幕上可見 */
     ShowWindow (hwnd, nCmdShow);
-
-    /* Run the message loop. It will run until GetMessage() returns 0 */
+    /************************
+    *   這裡可以加點什麼   *
+    ************************/
+    /* 運行消息循環。 它將一直運行到GetMessage()返回0為止 */
     while (GetMessage (&messages, NULL, 0, 0))
     {
-        /* Translate virtual-key messages into character messages */
+        /* 將虛擬按鍵消息轉換為字符消息 */
         TranslateMessage(&messages);
-        /* Send message to WindowProcedure */
+        /* 發送消息到視窗過程 */
         DispatchMessage(&messages);
     }
 
-    /* The program return-value is 0 - The value that PostQuitMessage() gave */
+    /* 程序的返回值為0 - PostQuitMessage()給出的數值 */
     return messages.wParam;
 }
 
 
-/*  This function is called by the Windows function DispatchMessage()  */
+/* Windows函數DispatchMessage()調用此函數 */
 
 LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)                  /* handle the messages */
+    switch (message)//處裡消息
     {
         case WM_DESTROY:
-            PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
+            PostQuitMessage (0);//將WM_QUIT發送到消息序列
             break;
-        default:                      /* for messages that we don't deal with */
+        default://用於我們不處理的消息
             return DefWindowProc (hwnd, message, wParam, lParam);
     }
 
     return 0;
 }
+
+#endif // LINUX

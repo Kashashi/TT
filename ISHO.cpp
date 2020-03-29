@@ -83,8 +83,6 @@ int main(){
     thread b(&player::layout,&My_Self);
     a.join();
     b.join();
-
-
     return 0;
 }*/
 
@@ -178,4 +176,3 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
 }
 
 #endif // LINUX
-
