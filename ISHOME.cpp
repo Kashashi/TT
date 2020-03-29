@@ -6,7 +6,8 @@
 using namespace std;
 
 char set_file_need_name[] = ("1.txt");//該字串為設定檔案
-int *runtime_code = new int(1); //執行代碼
+//int *runtime_code = new int(1); //執行代碼
+int runtime_code [1] = {0};
 
 double max_x = 40.0;//宣告最大範圍
 double max_y = 40.0;//宣告最大範圍
@@ -14,8 +15,7 @@ double full_x = max_x;
 double full_y = max_y;
 
 //宣告延遲函數
-void Delay(int time)//time*1000為秒數
-{
+void Delay(int time){//time*1000為秒數
 clock_t now = clock();
 while(clock() - now < time);
 }
@@ -77,7 +77,7 @@ bool Find_set(string a="a",string c="c",string b="="){
     ifstream in(set_file_need_name);
     string line;//行數
     string need_str = a+b+c;//字串合併
-    if((a=="a")&&(c=="c")){
+    if((a=="a")&&(c=="c")){//懶人警告
         cout << "你是不是忘記了什麼?\n";
     }
     if(in){// 有該檔案
@@ -102,26 +102,15 @@ bool Find_set(string a="a",string c="c",string b="="){
     }
 }
 
-/*
-int main(){
-    cout << "Hello! World!\n";
-    cout << "地圖最大X軸:" << full_x << endl;
-    cout << "地圖最大Y軸:" << full_y << endl;
-    cout << "";
-    player My_Self;//建構玩家
-    My_Self.re_set_coordinate(0,0);//初始化玩家
-	thread a(&player::console,&My_Self);
-    thread b(&player::layout,&My_Self);
-    a.join();
-    b.join();
-
-
-    return 0;
-}*/
+//void GUARD(int **runtime_code){
+void GUARD(int runtime_code[1]){
+    if(Find_set("GUARD","ON")){
+    }
+}
 
 #ifndef LINUX
-#include <tchar.h>
-#include <windows.h>
+    #include <tchar.h>
+    #include <windows.h>
 
 //宣告Windows程序
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -206,6 +195,26 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         default://用於我們不處理的消息
             return DefWindowProc (hwnd, message, wParam, lParam);
     }
+
+    return 0;
+}
+
+#else
+int main(){
+    cout << "Hello! World!\n";
+    cout << "地圖最大X軸:" << full_x << endl;
+    cout << "地圖最大Y軸:" << full_y << endl;
+    cout << "";
+    player My_Self;//建構玩家
+    My_Self.re_set_coordinate(0,0);//初始化玩家
+    //thread RunTime_Code_Reseter(&GUARD,&runtime_code);
+    thread RunTime_Code_Reseter(&GUARD,&runtime_code[1]);
+	thread command_line(&player::console,&My_Self);
+    thread player_control(&player::layout,&My_Self);
+    RunTime_Code_Reseter.join();
+    command_line.join();
+    player_control.join();
+
 
     return 0;
 }
