@@ -88,12 +88,10 @@ bool Find_set(string a="a",string c="c",string b="="){
                 cout <<"OK" << endl;
                 return true;
             }
-            else{
-                cout << "該筆資料不存在或是遺失";
-                *runtime_code = 3;
-                return false;
-            }
         }
+        cout << "該筆資料不存在或是遺失";
+        *runtime_code = 3;
+        return false;
     }
     else // 沒有該檔案
     {
