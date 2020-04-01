@@ -1,3 +1,9 @@
+extern "C" {
+#include ".\lua-5.3.5_Win64_dllw6_lib\include\lua.h"
+#include ".\lua-5.3.5_Win64_dllw6_lib\include\lualib.h"
+#include ".\lua-5.3.5_Win64_dllw6_lib\include\lauxlib.h"
+}
+
 #include <iostream>
 #include<string>
 #include <ctime>
